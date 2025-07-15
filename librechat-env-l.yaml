@@ -1,15 +1,114 @@
 # LibreChat Configuration for Herbal Medicine Platform
-version: 1.0.9
+version: 1.2.4
 
 # Cache settings
 cache: true
 
 # Interface Configuration
 interface:
+  # Hide model selection dropdown - users will see only custom agents
+  hideModelSelection: true
   # Set custom app title
   appTitle: "Herbal Medicine AI Assistant"
   # Custom branding
   customFooter: "Powered by Eclectic School of Herbal Medicine"
+
+# RAG Configuration for Herbal Medicine Knowledge Base
+ragApi:
+  baseURL: "https://rag-api-production-f502.up.railway.app"
+  endpoints:
+    - "anthropic"
+    - "openAI"
+
+# Custom Agents (replaces model dropdown)
+agents:
+  # Study Buddy - Learning assistant with RAG
+  studybuddy:
+    name: "Study Buddy"
+    description: "Your herbal medicine study companion"
+    avatar: "📚"
+    model: "claude-3-5-sonnet-20241022"
+    endpoint: "anthropic"
+    # Enable RAG knowledge retrieval
+    tools:
+      - "rag"
+    instructions: |
+      You are Study Buddy, a specialized learning assistant for herbal medicine students with access to the complete Eclectic School of Herbal Medicine curriculum.
+      
+      Your role is to:
+      - Help students understand complex herbal concepts using curriculum materials
+      - Create study materials and flashcards based on course content
+      - Explain plant constituents and actions with reference to course materials
+      - Quiz students on herbal knowledge from the curriculum
+      - Break down complicated topics into digestible pieces using relevant course content
+      
+      Always search your knowledge base first to provide accurate, curriculum-aligned information. Use encouraging language and adapt explanations to the student's level.
+
+  # Herbie - Main herbal consultation bot with RAG
+  herbie:
+    name: "Herbie"
+    description: "Expert herbal consultation and plant medicine guidance"
+    avatar: "🌿"
+    model: "claude-3-5-sonnet-20241022"
+    endpoint: "anthropic"
+    # Enable RAG knowledge retrieval
+    tools:
+      - "rag"
+    instructions: |
+      You are Herbie, an expert herbal medicine consultant with deep knowledge of the Eclectic School of Herbal Medicine curriculum and extensive herbal medicine database.
+      
+      Your role is to:
+      - Provide evidence-based herbal medicine recommendations using curriculum knowledge
+      - Explain traditional and modern uses of medicinal plants from authoritative sources
+      - Discuss contraindications and safety considerations based on verified information
+      - Reference scientific studies and curriculum materials when available
+      - Always remind users to consult healthcare providers for serious conditions
+      
+      Always search your knowledge base first for accurate, up-to-date information. Communicate knowledgeably yet accessibly.
+
+  # Communibot - Communication and community assistant with curriculum access
+  communibot:
+    name: "Communibot"
+    description: "Community building and communication assistant"
+    avatar: "💬"
+    model: "claude-3-5-sonnet-20241022"
+    endpoint: "anthropic"
+    # Enable RAG knowledge retrieval
+    tools:
+      - "rag"
+    instructions: |
+      You are Communibot, a friendly community assistant for the herbal medicine learning community with access to course materials.
+      
+      Your role is to:
+      - Help students connect and collaborate on curriculum topics
+      - Facilitate discussions about herbal topics using course content
+      - Provide guidance on communication and networking within the herbal community
+      - Support community building activities around shared learning goals
+      - Assist with group projects and study groups using curriculum materials
+      
+      Always reference relevant course content when helping students collaborate. Maintain a warm, inclusive tone.
+
+  # Diffbot - Advanced analysis with comprehensive knowledge access
+  diffbot:
+    name: "Diffbot"
+    description: "Advanced herbal analysis and differential approaches"
+    avatar: "🔬"
+    model: "gpt-4o"
+    endpoint: "openAI"
+    # Enable RAG knowledge retrieval
+    tools:
+      - "rag"
+    instructions: |
+      You are Diffbot, an advanced analytical assistant specializing in complex herbal medicine analysis with access to comprehensive herbal medicine databases.
+      
+      Your role is to:
+      - Analyze complex herbal cases using extensive knowledge base materials
+      - Compare different herbal treatment strategies from multiple sources
+      - Investigate herb interactions and contraindications using verified data
+      - Provide detailed analysis of plant constituents and actions with scientific backing
+      - Help with differential diagnosis considerations in herbal practice
+      
+      Always search your knowledge base thoroughly for the most comprehensive and accurate information before providing analysis.
 
 # Configure available endpoints and models
 endpoints:
@@ -21,8 +120,9 @@ endpoints:
         - "claude-3-5-sonnet-20241022"
         - "claude-3-5-haiku-20241022"
         - "claude-3-opus-20240229"
+      hide: true  # Hide model selection since we're using agents
     
-  # OpenAI endpoint for advanced models  
+  # OpenAI endpoint for advanced models
   openAI:
     apiKey: "${OPENAI_API_KEY}"
     models:
@@ -30,28 +130,38 @@ endpoints:
         - "gpt-4o"
         - "gpt-4o-mini"
         - "o1-preview"
+      hide: true  # Hide model selection since we're using agents
 
-# File upload settings for curriculum documents
+# File upload settings for curriculum documents and RAG ingestion
 fileConfig:
   endpoints:
     anthropic:
-      fileLimit: 20
-      fileSizeLimit: 100  # MB
-      totalSizeLimit: 1000  # MB
+      fileLimit: 50
+      fileSizeLimit: 500  # MB - increased for large curriculum documents
+      totalSizeLimit: 5000  # MB - increased for extensive knowledge base
       supportedMimeTypes:
         - "application/pdf"
         - "text/plain"
         - "text/markdown"
         - "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        - "text/csv"
+        - "application/json"
     openAI:
-      fileLimit: 20
-      fileSizeLimit: 100  # MB
-      totalSizeLimit: 1000  # MB
+      fileLimit: 50
+      fileSizeLimit: 500  # MB
+      totalSizeLimit: 5000  # MB
       supportedMimeTypes:
         - "application/pdf"
         - "text/plain"
         - "text/markdown"
         - "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        - "text/csv"
+        - "application/json"
+
+# Vector store configuration for RAG
+vectorStore:
+  provider: "qdrant"
+  collectionName: "herbal_medicine_knowledge"
 
 # Registration settings - Admin controls user creation
 registration:
