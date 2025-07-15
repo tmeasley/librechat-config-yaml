@@ -1,5 +1,5 @@
 # LibreChat Configuration for Herbal Medicine Platform
-version: 1.1.5
+version: 1.2.4
 
 # Interface Configuration
 interface:
@@ -9,6 +9,9 @@ interface:
   appTitle: "Herbal Medicine AI Assistant"
   # Custom branding
   customFooter: "Powered by Eclectic School of Herbal Medicine"
+
+# Cache settings
+cache: true
 
 # RAG Configuration for Herbal Medicine Knowledge Base
 ragApi:
@@ -24,7 +27,7 @@ agents:
     name: "Study Buddy"
     description: "Your herbal medicine study companion"
     avatar: "📚"
-    model: "claude-4-sonnet"
+    model: "claude-3-5-sonnet-20241022"
     endpoint: "anthropic"
     # Enable RAG knowledge retrieval
     tools:
@@ -46,7 +49,7 @@ agents:
     name: "Herbie"
     description: "Expert herbal consultation and plant medicine guidance"
     avatar: "🌿"
-    model: "claude-4-sonnet"
+    model: "claude-3-5-sonnet-20241022"
     endpoint: "anthropic"
     # Enable RAG knowledge retrieval
     tools:
@@ -68,7 +71,7 @@ agents:
     name: "Communibot"
     description: "Community building and communication assistant"
     avatar: "💬"
-    model: "claude-4-sonnet"
+    model: "claude-3-5-sonnet-20241022"
     endpoint: "anthropic"
     # Enable RAG knowledge retrieval
     tools:
@@ -90,7 +93,7 @@ agents:
     name: "Diffbot"
     description: "Advanced herbal analysis and differential approaches"
     avatar: "🔬"
-    model: "o3-pro"
+    model: "o3-mini"
     endpoint: "openAI"
     # Enable RAG knowledge retrieval
     tools:
@@ -111,14 +114,22 @@ agents:
 endpoints:
   # Anthropic endpoint for Claude models
   anthropic:
+    apiKey: "${ANTHROPIC_API_KEY}"
     models:
-      default: ["claude-4-sonnet"]
+      default:
+        - "claude-3-5-sonnet-20241022"
+        - "claude-3-5-haiku-20241022"
+        - "claude-3-opus-20240229"
       hide: true  # Hide model selection since we're using agents
     
   # OpenAI endpoint for advanced models
   openAI:
+    apiKey: "${OPENAI_API_KEY}"
     models:
-      default: ["o3-pro", "gpt-4o", "o1-preview"]
+      default:
+        - "o3-mini"
+        - "gpt-4o"
+        - "o1-preview"
       hide: true  # Hide model selection since we're using agents
 
 # File upload settings for curriculum documents and RAG ingestion
@@ -152,7 +163,7 @@ vectorStore:
   provider: "qdrant"
   collectionName: "herbal_medicine_knowledge"
 
-# Registration settings
+# Registration settings - Admin controls user creation
 registration:
   socialLogins: []
-  allowedDomains: []  # Admin controls user creation 
+  allowedDomains: [] 
