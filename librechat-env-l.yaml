@@ -6,6 +6,8 @@ cache: true
 
 # Interface Configuration
 interface:
+  # Hide model selection dropdown - users will see only custom agents
+  hideModelSelection: true
   # Set custom app title
   appTitle: "Herbal Medicine AI Assistant"
   # Custom branding
