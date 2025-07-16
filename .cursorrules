@@ -1,0 +1,63 @@
+# Cursor Rules for LibreChat Configuration Repository
+
+## Project Structure
+This is the **CONFIGURATION REPOSITORY** for LibreChat Railway deployment.
+- Main LibreChat code: `tmeasley/LibreChat` (separate repo)
+- **Configuration repo: `tmeasley/librechat-config-yaml` (THIS REPO)**
+- Railway reads config from: `librechat-env-l.yaml` in THIS repo
+
+## Critical Deployment Workflow
+**IMPORTANT**: Changes to UI/agents must be made HERE, not in main LibreChat repo!
+
+### Correct Process:
+1. Edit `librechat-env-l.yaml` in THIS repository
+2. `git add librechat-env-l.yaml`
+3. `git commit -m "description"`
+4. `git push` → Triggers Railway auto-deployment
+5. Wait 2-3 minutes for deployment
+6. Refresh LibreChat web interface
+
+### PowerShell Commands (Windows)
+- Use PowerShell syntax: `Get-ChildItem`, `Copy-Item`, `Get-Location`
+- Command chaining: use `;` not `&&`
+- Check directory: `Get-Location` before git commands
+
+## Configuration File: librechat-env-l.yaml
+
+### Current Setup (Working):
+- ✅ Custom app title: "Herbal Medicine AI Assistant"
+- ✅ Custom footer: "Powered by Eclectic School of Herbal Medicine"
+- ✅ hideModelSelection: true (shows agents instead of models)
+- ✅ 4 Custom Agents defined:
+  - Study Buddy (learning companion)
+  - Herbie (expert consultation) 
+  - Communibot (community building)
+  - Diffbot (advanced analysis)
+- ✅ RAG API configured: rag-api-production-f502.up.railway.app
+- ✅ Vector stores for herbal curriculum
+- ✅ File upload settings for documents
+
+### Key Settings:
+```yaml
+interface:
+  hideModelSelection: true  # CRITICAL: Shows agents not models
+  appTitle: "Herbal Medicine AI Assistant"
+  customFooter: "Powered by Eclectic School of Herbal Medicine"
+```
+
+## Common Issues Resolved:
+1. **Wrong Repository**: Was editing main LibreChat repo instead of config repo
+2. **Missing hideModelSelection**: Agents weren't showing without this setting
+3. **PowerShell Syntax**: Fixed Unix command usage in Windows environment
+
+## Railway Integration:
+- Repository: `tmeasley/librechat-config-yaml`
+- Config file: `librechat-env-l.yaml`
+- Auto-deploy: Push to main branch triggers deployment
+- URL: Railway reads from GitHub raw URL automatically
+
+## Future Changes:
+- All UI customizations go in `librechat-env-l.yaml`
+- All agent modifications go in `agents:` section
+- RAG API changes go in `ragApi:` section
+- Interface settings go in `interface:` section 
