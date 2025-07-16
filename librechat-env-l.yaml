@@ -39,20 +39,8 @@ endpoints:
     titleConvo: true
     titleModel: "gpt-4o-mini"
 
-# RAG API Configuration for herbal medicine knowledge base
-#ragApi:
-#  - name: "herbal_medicine_kb"
-#    apiKey: "${RAG_API_KEY}"
-#    baseURL: "https://rag-api-production-f502.up.railway.app"
-#    endpoints:
-#      query: "/query"
-#      documents: "/documents"
-
-# Vector Store Configuration
-#vectorStores:
-#  herbal_curriculum:
-#    ragApi: "herbal_medicine_kb"
-#    namespace: "herbal_curriculum"
+# RAG functionality should be implemented through tools and assistants
+# Custom RAG integration not supported in base LibreChat configuration
 
 # File upload settings for curriculum documents
 fileConfig:
@@ -118,10 +106,6 @@ agents:
     model:
       model: "claude-3-5-sonnet-20241022"
       endpoint: "anthropic"
-    tools:
-      - "rag"
-    vectorStoreIds:
-      - "herbal_curriculum"
 
   # Herbie - Main Consultation Bot
   - name: "Herbie"
@@ -168,10 +152,6 @@ agents:
     model:
       model: "claude-3-5-sonnet-20241022"
       endpoint: "anthropic"
-    tools:
-      - "rag"
-    vectorStoreIds:
-      - "herbal_curriculum"
 
   # Communibot - Community Building
   - name: "Communibot"
@@ -220,8 +200,6 @@ agents:
     model:
       model: "claude-3-5-haiku-20241022"
       endpoint: "anthropic"
-    tools:
-      - "rag"
 
   # Diffbot - Advanced Analysis
   - name: "Diffbot"
@@ -278,10 +256,6 @@ agents:
     model:
       model: "o1-preview"
       endpoint: "openAI"
-    tools:
-      - "rag"
-    vectorStoreIds:
-      - "herbal_curriculum"
 
 # Registration settings - Admin controls user creation
 registration:
